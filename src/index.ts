@@ -3,6 +3,7 @@ import {appUse} from './p2-main/app'
 import {routes} from './p2-main/routes'
 import {useMongo} from './p2-main/mongo'
 import {PORT} from './p0-config/config'
+import {globalCatch} from './p1-common/c1-errors/errors'
 
 const app = express()
 
@@ -16,30 +17,4 @@ useMongo(() => {
     })
 })
 
-export const destruct = (e: any) => {
-    return typeof e === 'object' ? {...e} : 'not object, '
-}
-
-export const onUncaughtException = (f?: Function) => {
-    process.on('uncaughtException', (e) => {
-        f && f() // log in db
-
-        console.log(`!!! Uncaught Exception${f ? ' with log in db' : ''}: `, destruct(e), e)
-    })
-}
-
-export const onUnhandledRejection = (f?: Function) => {
-    process.on('unhandledRejection', (reason, p) => {
-        f && f() // log in db
-
-        console.log(
-            `!!! Unhandled Rejection${f ? ' with log in db' : ''}: `,
-            reason,
-            p.then(x => console.log('!!! then: ', x))
-                .catch(e => console.log('!!! catch: ', destruct(e), e))
-        )
-    })
-}
-
-onUncaughtException()
-onUnhandledRejection()
+globalCatch()

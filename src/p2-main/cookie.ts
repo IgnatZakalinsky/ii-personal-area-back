@@ -18,6 +18,7 @@ export const cookie = (app: Express) => {
             //     return callback(null, true)
             //
             // callback(new Error('Not allowed by CORS'))
+            console.log('-----------------------------------------------------------------------------')
             console.log('origin: ', origin)
             callback(null, true) // everyone is allowed
         }

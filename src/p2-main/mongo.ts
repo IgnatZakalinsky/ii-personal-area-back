@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import {destruct, onUncaughtException, onUnhandledRejection} from '../index'
+import {destruct, globalCatch} from '../p1-common/c1-errors/errors'
 
 const USER_NAME = process.env.MONGO_DB_USER_NAME || ''
 const PASSWORD = process.env.MONGO_DB_USER_PASSWORD || ''
@@ -19,12 +19,14 @@ export const useMongo = (f: Function) => {
 
             f()
 
-            onUncaughtException(() => {
-                console.log('log in db')
-            })
-            onUnhandledRejection(() => {
-                console.log('log in db')
-            })
+            globalCatch(
+                () => {
+                    console.log('log in db')
+                },
+                () => {
+                    console.log('log in db')
+                }
+            )
         })
         .catch(e => console.log('!!! MongoDB connection error: ', destruct(e), e))
 }
