@@ -62,7 +62,7 @@ export class BaseError {
         })
     }
 
-    // промис с отловом ошибок и автоматической отправкой ошибки
+    // промис с отловом ошибок и автоматической отправкой ошибки на фронт
     static PromiseWithTryAndSend = (inTryName: string) => <A>(
         response: Response,
         getAnswer: () => A,
@@ -79,7 +79,7 @@ export class BaseError {
                     res(answer)
                 }
             } catch (e) {
-                e.send(response) // PromiseWithTry => BaseError
+                e.send(response) // PromiseWithTry => e: BaseError
             }
         })
     }

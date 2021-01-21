@@ -18,7 +18,6 @@ export type BaseDocDefType<T> = DocumentDefinition<T>
  */
 export type BaseSortQueryType<T> = string | any
 
-// вынести методы в отдельные функции/файлы
 export class BaseDAL<T extends BaseDocType> {
     constructor(
         Model: BaseModelType<T>,
@@ -151,7 +150,7 @@ export class BaseDAL<T extends BaseDocType> {
         methodName: string,
         more?: any
     ) {
-        return BaseError.PromiseWithTry(`DAL:${this.modelName}`)
+        return BaseError.PromiseWithTry(`DAL:${this.modelName}`) // отлов и стандартизация ошибок
         (getAnswer, methodName, more)
     }
 }
