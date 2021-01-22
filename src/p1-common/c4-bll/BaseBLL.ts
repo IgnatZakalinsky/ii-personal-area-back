@@ -27,10 +27,13 @@ export class BaseBLL<T extends BaseDocType> {
     }
 
     async getItems(find: BaseFilterQueryType<T>, sort: BaseSortQueryType<T>) {
-        return this.BLLPromise<T[] extends Array<any> ? BaseDocDefType<T>[] : (BaseDocDefType<T> | null)>(
+        return this.BLLPromise<{ [key: string]: any }>(
             async () => {
+                const items = await this._DAL.readArray(find, sort)
+                const count = await this._DAL.countItems(find)
+                const modelName = this._DAL.modelName
 
-                return this._DAL.readArray(find, sort)
+                return {[modelName + 's']: items, [modelName + 'sTotalCount']: count}
             },
             '.getItems',
             {find, sort}
@@ -48,35 +51,6 @@ export class BaseBLL<T extends BaseDocType> {
     }
 }
 
-// (Model: number, name: string, checkUpdate: (item: any, oldItem: any) => any) => {
-
-//         getItems(find: any, sort: any) {
-//             type AnswerType = { type: 200, items: any[], itemsTotalCount: number }
-//                 | { type: 400 | 500, error: ErrorType }
-//
-//             return new Promise<AnswerType>(async res => {
-//                 try {
-//                     const itemsTotalCount = await this._Model.countItems(find)
-//
-//                     try {
-//                         const items = await this._Model.readArray(find, sort)
-//                         res({type: 200, items, itemsTotalCount})
-//
-//                     } catch (e) {
-//                         res({
-//                             type: 500,
-//                             error: {e, inTry: `get${name}s/read${name}s`, more: {find, sort, itemsTotalCount}},
-//                         })
-//                     }
-//
-//                 } catch (e) {
-//                     res({
-//                         type: 500,
-//                         error: {e, inTry: `get${name}s/count${name}s`, more: {find}},
-//                     })
-//                 }
-//             })
-//         },
 //         addItem<T>(checkedItem: T) {
 //             return this._Model.createItem(checkedItem)
 //         },

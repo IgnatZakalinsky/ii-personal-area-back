@@ -80,7 +80,7 @@ export class BaseDAL<T extends BaseDocType> {
     countItems(find: BaseFilterQueryType<T>) {
         return this.DALPromise<number>(
             () => {
-                return this._Model.count(find)
+                return this._Model.countDocuments(find)
                     .exec()
             },
             '.countItems',
@@ -110,6 +110,7 @@ export class BaseDAL<T extends BaseDocType> {
         )
     }
 
+    // not need
     checkUnique(checkedItem: BaseCreateQueryType<T>, methodName: string) {
         return this.DALPromise<void>(
             async () => {

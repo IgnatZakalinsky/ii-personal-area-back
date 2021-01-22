@@ -1,9 +1,10 @@
 import express from 'express'
-import {getPlaylistsMock, getPlaylists} from './p1-controllers/getPlaylists'
+import {getPlaylists} from './p1-controllers/getPlaylists'
+import {addPlaylistMock} from './p1-controllers/addPlaylist'
 
 const playlists = express.Router()
 
-// playlists2.post('/', addPlaylist)
+playlists.post('/', addPlaylistMock)
 playlists.get('/', getPlaylists)
 // playlists.delete('/:id?', PlaylistController.deleteItem.bind(PlaylistController))
 // playlists.put('/', putPlaylist)
