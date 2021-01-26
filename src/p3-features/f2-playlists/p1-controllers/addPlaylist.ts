@@ -5,5 +5,9 @@ export const addPlaylistMock = async (req: Request, res: Response) => {
     res.status(200).json({})
 }
 export const addPlaylist = async (req: Request, res: Response) => {
-    // await PlaylistController.getItems(req, res, find, sort)
+    const {playlist} = req.body
+
+    // check playlist
+
+    await PlaylistController.addItem(req, res, playlist)
 }

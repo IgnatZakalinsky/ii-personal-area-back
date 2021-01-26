@@ -54,8 +54,10 @@ export class BaseDAL<T extends BaseDocType> {
     ) {
         return this.DALPromise<T[] extends Array<any> ? BaseDocDefType<T>[] : (BaseDocDefType<T> | null)>(
             () => {
+                const finalSort = Object.keys(sort).length ? sort : {updated: -1}
+
                 return this._Model.find(find)
-                    .sort(sort)
+                    .sort(finalSort)
                     .skip(itemForPageCount * (pageNumber - 1))
                     .limit(itemForPageCount)
                     .lean()
