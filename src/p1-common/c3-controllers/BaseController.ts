@@ -20,7 +20,7 @@ export class BaseController<T extends BaseDocType> {
             {checkedItem},
         )
 
-        res.status(201).json({['new' + this._BLL._DAL.modelName]: addedItem})
+        res.status(201).json({['new_' + this._BLL._DAL.modelName]: addedItem})
     }
 
     async getItems(req: Request, res: Response, find: BaseFilterQueryType<T>, sort: BaseSortQueryType<T>) {
@@ -34,6 +34,21 @@ export class BaseController<T extends BaseDocType> {
         )
 
         res.status(200).json(answer)
+    }
+
+    async deleteItem(req: Request, res: Response) {
+        const {id} = req.params
+
+        const deletedItem = await this.ControllerPromise<T>(
+            res,
+            () => {
+                return this._BLL.deleteItem(id)
+            },
+            '.deleteItem',
+            {id},
+        )
+
+        res.status(200).json({['deleted_' + this._BLL._DAL.modelName]: deletedItem})
     }
 
     ControllerPromise<A>(

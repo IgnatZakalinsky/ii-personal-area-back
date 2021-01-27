@@ -40,6 +40,34 @@ export class BaseBLL<T extends BaseDocType> {
         )
     }
 
+    async deleteItem(id: string) {
+        return this.BLLPromise<T>(
+            async () => {
+                const item = await this._DAL.getItemById(id)
+
+                if (!item) {
+                    return new BaseError({
+                        e: `BLL:${this._DAL.modelName} id not valid /ᐠ｡ꞈ｡ᐟ\\`,
+                        type: 400,
+                        inTry: `BLL:${this._DAL.modelName}.deleteItem/1`,
+                        more: {id}
+                    })
+                } else {
+                    const deletedItem = await this._DAL.removeItemById(id)
+
+                    if (deletedItem) return deletedItem
+                    else return new BaseError({
+                        e: `BLL:${this._DAL.modelName} id not valid /ᐠ｡ꞈ｡ᐟ\\`,
+                        type: 400,
+                        inTry: '.deleteItem/2',
+                        more: {id}
+                    })
+                }
+            },
+            `BLL:${this._DAL.modelName}.deleteItem`,
+            {id},
+        )
+    }
 
     BLLPromise<A>(
         getAnswer: () => Promise<A | BaseError>,
@@ -51,9 +79,7 @@ export class BaseBLL<T extends BaseDocType> {
     }
 }
 
-//         addItem<T>(checkedItem: T) {
-//             return this._Model.createItem(checkedItem)
-//         },
+
 //         deleteItem(id: string) {
 //             type AnswerType = { type: 200, deletedItem: any | null }
 //                 | { type: 400 | 500, error: ErrorType }
