@@ -47,3 +47,15 @@ export const cookie = (app: Express) => {
 //         expires: new Date(deathTime),
 //     })
 // }
+export const resCookie = (res: Response, token: string, deviceToken: string) => {
+    const dToken = deviceToken.slice(0, 36)
+    const deadTime = deviceToken.slice(37)
+
+    return res.cookie('token', token, {
+        ...cookieSettings,
+        expires: new Date(Date.now() + (1000 * 60 * 60 * 24 * 7)),
+    }).cookie('deviceToken', dToken, {
+        ...cookieSettings,
+        expires: new Date(deadTime),
+    })
+}

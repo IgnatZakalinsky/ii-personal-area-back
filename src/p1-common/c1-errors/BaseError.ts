@@ -1,7 +1,7 @@
 import {Response} from 'express'
 
 export type BaseErrorType = {
-    type: 400 | 500 // код ошибки, можно расширять
+    type: 400 | 401 | 500 // код ошибки, можно расширять
     e: any // текст ошибки (400, +) или ошибка (500)
     inTry: string // где произошла ошибка
     more?: any // данные, которые могут помочь понять в чём ошибка
@@ -15,7 +15,7 @@ export class BaseError {
         this.more = error.more
     }
 
-    type: 400 | 500
+    type: 400 | 401 | 500
     e: any
     inTry: string
     more?: any

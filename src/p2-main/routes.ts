@@ -1,9 +1,10 @@
 import {Express, Request, Response} from 'express'
 import {VERSION} from '../p0-config/config'
 import playlists from '../p3-features/f2-playlists'
+import auth from '../p3-features/f1-auth'
 
 export const routes = (app: Express) => {
-    // app.use(VERSION + '/auth', auth)
+    app.use(VERSION + '/auth', auth)
     app.use(VERSION + '/playlists', playlists)
 
     // ping endpoint
