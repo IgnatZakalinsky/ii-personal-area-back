@@ -5,5 +5,5 @@ const FRIEND_KEY = process.env.FRIEND_KEY || ''
 
 export const instance = axios.create({
     baseURL,
-    headers: {'FRIEND-KEY': FRIEND_KEY},
+    // headers: {'FRIEND-KEY': FRIEND_KEY},
 })
