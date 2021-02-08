@@ -61,7 +61,8 @@ export const me2 = async (req: Request, res: Response) => {
                 baseToken: token + '+' + Date.now() + (1000 * 60 * 60 * 24 * 7),
                 tokens: [],
                 created: new Date(),
-                updated: new Date()
+                updated: new Date(),
+                avatar: '',
             })
 
             delete user.baseToken

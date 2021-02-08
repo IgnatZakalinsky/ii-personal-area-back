@@ -42,6 +42,8 @@ export interface IUser extends Document {
     firstName: string // 'Игнат',
     lastName: string // 'Закалинский',
 
+    avatar: string
+
     baseToken: string
     tokens: string[]
     isAdmin: boolean
@@ -115,6 +117,9 @@ const UserSchema: Schema = new Schema(
         lastName: {
             type: String,
             required: true,
+        },
+        avatar: {
+            type: String,
         },
         baseToken: {
             type: String,
