@@ -1,4 +1,4 @@
-import {BaseCreateQueryType, BaseDocType, BaseFilterQueryType, BaseSortQueryType} from '../c5-dal/BaseDAL'
+import {BaseCreateQueryType, BaseDocType, BaseFilterQueryType, BaseSortQueryType, BaseUpdateQueryType} from '../c5-dal/BaseDAL'
 import {BaseBLL} from '../c4-bll/BaseBLL'
 import {Request, Response} from 'express'
 import {BaseError} from '../c1-errors/BaseError'
@@ -23,11 +23,18 @@ export class BaseController<T extends BaseDocType> {
         res.status(201).json({['new_' + this._BLL._DAL.modelName]: addedItem})
     }
 
-    async getItems(req: Request, res: Response, find: BaseFilterQueryType<T>, sort: BaseSortQueryType<T>) {
+    async getItems(
+        req: Request,
+        res: Response,
+        find: BaseFilterQueryType<T>,
+        sort: BaseSortQueryType<T>,
+        itemForPageCount?: number,
+        pageNumber?: number
+    ) {
         const answer = await this.ControllerPromise<{ [key: string]: any }>(
             res,
             () => {
-                return this._BLL.getItems(find, sort)
+                return this._BLL.getItems(find, sort, itemForPageCount, pageNumber)
             },
             '.getItems',
             {find, sort},
@@ -49,6 +56,21 @@ export class BaseController<T extends BaseDocType> {
         )
 
         res.status(200).json({['deleted_' + this._BLL._DAL.modelName]: deletedItem})
+    }
+
+    async putItem(req: Request, res: Response, checkedItem: BaseUpdateQueryType<T>) {
+        const {id} = req.body
+
+        const addedItem = await this.ControllerPromise<T>(
+            res,
+            () => {
+                return this._BLL.putItem(id, checkedItem)
+            },
+            '.putItem',
+            {id, checkedItem},
+        )
+
+        res.status(201).json({['new_' + this._BLL._DAL.modelName]: addedItem})
     }
 
     ControllerPromise<A>(

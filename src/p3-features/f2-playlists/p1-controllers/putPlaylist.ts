@@ -1,10 +1,10 @@
 import {Request, Response} from 'express'
 import {PlaylistController} from './index'
 
-export const addPlaylist = async (req: Request, res: Response) => {
+export const putPlaylist = async (req: Request, res: Response) => {
     const {playlist} = req.body
 
     // check playlist in baseController
 
-    await PlaylistController.addItem(req, res, playlist)
+    await PlaylistController.putItem(req, res, playlist)
 }
